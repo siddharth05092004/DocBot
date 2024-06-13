@@ -159,7 +159,7 @@ def image_extractor(page,response):
     
     images = create_text_image(page)
     for i in range(len(images)):
-        model_gem_pro_vis = genai.GenerativeModel('gemini-pro-vision')
+        model_gem_pro_vis = genai.GenerativeModel('gemini-1.5-flash')
         try:
             image_relevance = model_gem_pro_vis.generate_content(["On a scale of 1 to 10 (only give the number as response), How much relevant is the image provided to the text - " + response,Image.fromarray(images[i])])
             image_relevance.resolve()
@@ -233,9 +233,9 @@ def retrieve_chat(index):
     st.session_state.current_chat_messages = st.session_state.all_chat_messages[index]
     change_messages()
     
-st.markdown("<h1 style='text-align: center;'>DOCBOT</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;color:#e61542;'>DOCBOT</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; margin:5px'>YAMAHA X IIT MANDI HACKATHON</h3>", unsafe_allow_html=True)
-st.sidebar.title("Instructions")
+st.sidebar.markdown("<h1 style='text-align: center; color:#e61542;'>Instructions</h1>", unsafe_allow_html=True)
 st.sidebar.write(
     '''1. Upload the PDF file(s) using the file uploader
 2. Click Submit
@@ -245,7 +245,7 @@ st.sidebar.write(
 '''
 )
 st.sidebar.button('New chat',disabled = not st.session_state.submitted,on_click = new_chat_maker)
-st.sidebar.title("Previous Chats")
+st.sidebar.markdown("<h1 style='text-align: center; color:#e61542;'>Previous Chats</h1>", unsafe_allow_html=True)
 files = st.file_uploader("Input PDF file(s):", accept_multiple_files=True,disabled=st.session_state.submitted, type="pdf")
 submit_button = st.button("Submit",on_click = submit_pdfs,disabled=st.session_state.submitted)
 if submit_button:

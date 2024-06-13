@@ -1,8 +1,8 @@
-.st-emotion-cache-janbn0 {
+/* .st-emotion-cache-janbn0 {
     flex-direction: row-reverse;
     text-align: right;
     
-}
+} */
 
 section[data-testid="stSidebar"] div.stButton button {
     width: 100%;
@@ -21,3 +21,20 @@ img{
     margin-right: auto;
     width: 50%;
 }
+
+.stChatMessage.user {
+    background-color: #e6f2ff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #333;
+  }
+
+  .st-emotion-cache-janbn0{
+    background-color:#475569; color:white;padding:10px; border-radius:25px; margin:10px 0 10px auto; text-align:left; width:55%;
+  }
+
+  .st-emotion-cache-4oy321{
+    background-color:#475569;color:white; padding:10px; border-radius:25px; margin:10px 0 10px 0; text-align:left; width:55%;
+  }
