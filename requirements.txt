@@ -7,3 +7,5 @@ PyPDF2==3.0.1
 PyMuPDF==1.24.2
 google.generativeai==0.5.2
 langchain_community==0.0.34
+sentence-transformers
+
