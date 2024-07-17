@@ -16,8 +16,8 @@ import fitz
 import io
 from datetime import datetime
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = ""
-genai.configure(api_key='')
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
+genai.configure(api_key='AIzaSyDMAqL5ga6BQzk_UJwmahsFuSNz4Awm-5c')
 model_gem_pro = genai.GenerativeModel('gemini-pro')
 
 def local_css(file_name):
