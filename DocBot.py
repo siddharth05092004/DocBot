@@ -234,7 +234,7 @@ def retrieve_chat(index):
     change_messages()
     
 st.markdown("<h1 style='text-align: center;color:#e61542;'>DOCBOT</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; margin:5px'>YAMAHA X IIT MANDI HACKATHON</h3>", unsafe_allow_html=True)
+#st.markdown("<h3 style='text-align: center; margin:5px'>YAMAHA X IIT MANDI HACKATHON</h3>", unsafe_allow_html=True)
 st.sidebar.markdown("<h1 style='text-align: center; color:#e61542;'>Instructions</h1>", unsafe_allow_html=True)
 st.sidebar.write(
     '''1. Upload the PDF file(s) using the file uploader
