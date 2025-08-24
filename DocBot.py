@@ -1,24 +1,27 @@
-import streamlit as st
-from PyPDF2 import PdfReader
-import PyPDF2
-from langchain_community.vectorstores import FAISS
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.docstore.document import Document
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.chains import ConversationalRetrievalChain
-from langchain_community.llms import HuggingFaceHub
+from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
-import os
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from PyPDF2 import PdfReader
+from langchain_community.docstore.document import Document
+import streamlit as st
 import google.generativeai as genai
-from PIL import Image, ImageDraw,ImageEnhance,PngImagePlugin
-import numpy as np
-import cv2
-import fitz
-import io
+import os
+from PIL import Image, ImageDraw,ImageEnhance,PngImagePlugin 
+import numpy as np 
+import cv2 
+import fitz 
+import io 
+import PyPDF2
 from datetime import datetime
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
-genai.configure(api_key='AIzaSyDMAqL5ga6BQzk_UJwmahsFuSNz4Awm-5c')
-model_gem_pro = genai.GenerativeModel('gemini-pro')
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
+os.environ["GOOGLE_API_KEY"] = 'AIzaSyApkxFr_vbyom3c-j9dt4qnbHez5YHhYag'
+
+genai.configure(api_key=os.getenv("AIzaSyApkxFr_vbyom3c-j9dt4qnbHez5YHhYag"))
+
+model_gem_pro = genai.GenerativeModel('gemini-2.0-flash')
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -45,11 +48,14 @@ def submit_pdfs():
         st.session_state.submitted=True
         docs = []
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=100)
-        instructor_embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",)
-        llm = HuggingFaceHub(
-        repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1",
-        model_kwargs={"temperature":0.55, "max_length":10}
-            )
+        instructor_embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-exp-03-07")
+        llm = ChatGoogleGenerativeAI(
+        model="gemini-2.0-flash",
+        temperature=0.3,
+        max_tokens=None,
+        timeout=None,
+        max_retries=2
+    )
         for i in range(len(files)):
             process_pdf(text_splitter,docs,files[i],i)
         st.session_state.faiss_index = FAISS.from_documents(docs, instructor_embeddings)
@@ -159,6 +165,7 @@ def image_extractor(page,response):
     
     images = create_text_image(page)
     for i in range(len(images)):
+        print()
         model_gem_pro_vis = genai.GenerativeModel('gemini-1.5-flash')
         try:
             image_relevance = model_gem_pro_vis.generate_content(["On a scale of 1 to 10 (only give the number as response), How much relevant is the image provided to the text - " + response,Image.fromarray(images[i])])
@@ -213,8 +220,8 @@ def query_response(prompt):
             response += '"'+files[i[0]].name+'"' + '-' + str(i[1]) + '\n'
 
 
-    response = result['answer'][result['answer'].rfind('Helpful Answer:'):][16:] + response
-
+    # response = result['answer'][result['answer'].rfind('Helpful Answer:'):][16:] + response
+    response = result['answer'] 
 
 
     return [response,image_to_return]
@@ -234,7 +241,7 @@ def retrieve_chat(index):
     change_messages()
     
 st.markdown("<h1 style='text-align: center;color:#e61542;'>DOCBOT</h1>", unsafe_allow_html=True)
-#st.markdown("<h3 style='text-align: center; margin:5px'>YAMAHA X IIT MANDI HACKATHON</h3>", unsafe_allow_html=True)
+# st.markdown("<h3 style='text-align: center; margin:5px'>YAMAHA X IIT MANDI HACKATHON</h3>", unsafe_allow_html=True)
 st.sidebar.markdown("<h1 style='text-align: center; color:#e61542;'>Instructions</h1>", unsafe_allow_html=True)
 st.sidebar.write(
     '''1. Upload the PDF file(s) using the file uploader
